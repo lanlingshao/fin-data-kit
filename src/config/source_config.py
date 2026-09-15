@@ -1,0 +1,65 @@
+from dataclasses import dataclass
+from enum import StrEnum
+from typing import ClassVar, Optional, Union, Generic
+
+from src.provider.data_source import Source
+
+
+class AuthType(StrEnum):
+    NONE = "none"
+    COOKIE = "cookie"
+    ACCOUNT = "account"
+    TOKEN = "token"
+
+
+@dataclass
+class RetryConfig:
+    max_retries: int = 0
+
+
+@dataclass
+class RateLimitConfig:
+    rate: float = 5
+    capacity: int = 10
+
+
+@dataclass
+class BaseAuthConfig:
+    type: ClassVar[AuthType]
+
+@dataclass
+class CookieAuthConfig(BaseAuthConfig):
+    type = AuthType.COOKIE
+    home_url: str
+    cache_key: str
+    cookie_num: int = 20
+    refresh_status_code: int = 400
+    refresh_error_code: str = "400016"
+
+
+@dataclass
+class AccountAuthConfig(BaseAuthConfig):
+    type = AuthType.ACCOUNT
+    username: str
+    password: str
+    login_url: str
+
+
+AuthConfig = Union[
+    CookieAuthConfig,
+    AccountAuthConfig,
+]
+
+@dataclass
+class MetricsConfig:
+    pass
+
+
+@dataclass
+class SourceConfig(Generic[Source]):
+    source: Source
+    retry: RetryConfig
+    rate_limit: RateLimitConfig
+    metrics: MetricsConfig
+    headers: dict[str, str] | None = None
+    auth: Optional[AuthConfig] = None

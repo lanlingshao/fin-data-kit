@@ -1,0 +1,57 @@
+from typing import Generic
+
+import httpx
+
+from src.client.http_client import HttpClient
+from src.provider.data_source import Source
+from src.registry.source_config_registry import SourceConfigRegistry
+
+
+class ProviderClient:
+    def __init__(
+        self,
+        source: Source,
+        registry: SourceConfigRegistry,
+        http_client: HttpClient,
+    ):
+        self._source = source
+        self._registry = registry
+        self._client = http_client
+
+    @property
+    def source(self):
+        return self._source
+
+    async def request(self, method, url, **kwargs) -> httpx.Response:
+        config = self._registry.get(self._source)
+
+        return await self._client.request(
+            method,
+            url,
+            source=self._source,
+            config=config,
+            **kwargs
+        )
+
+    async def get(self, url, **kwargs) -> httpx.Response:
+        return await self.request("GET", url, **kwargs)
+
+    async def post(self, url, **kwargs) -> httpx.Response:
+        return await self.request("POST", url, **kwargs)
+
+
+# 数据源客户端注册器（懒加载）
+class ProviderClientRegistry(Generic[Source]):
+    def __init__(self, registry, http_client):
+        self._registry = registry
+        self._client = http_client
+        self._cache: dict[Source, ProviderClient] = {}
+
+    def get(self, source: Source) -> ProviderClient:
+        if source not in self._cache:
+            self._cache[source] = ProviderClient(
+                source,
+                self._registry,
+                self._client,
+            )
+        return self._cache[source]
