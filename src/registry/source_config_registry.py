@@ -100,7 +100,8 @@ def create_source_config_registry(config: Dict[str, any]) -> SourceConfigRegistr
 
     config_list = config.get("sources", [])
 
-    # 假设来自 yaml / json / db
+    # 可来自 yaml / json / db
+    # can from yaml / json /db
     for cfg in config_list:
         source_config = _build_source_config(cfg)
         registry.register(source_config)

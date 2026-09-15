@@ -7,7 +7,7 @@ from src.client.strategies.base import RequestStrategy
 class TokenBucket:
     def __init__(self, rate: float, capacity: int):
         self._rate = rate
-        self._capacity = capacity
+        self._capacity = float(capacity)
         self._tokens = float(capacity)
         self._last_refill = time.monotonic()
 
@@ -35,6 +35,7 @@ class TokenBucket:
                     self._tokens -= tokens
                     return
 
+                # calculate next available time point
                 # 精确计算下次可用时间点
                 needed = tokens - self._tokens
                 wait_time = needed / self._rate if self._rate > 0 else None
@@ -42,14 +43,17 @@ class TokenBucket:
             if wait_time is None:
                 raise RuntimeError("rate=0, cannot acquire tokens")
 
-            # print(f"wait_time: {wait_time}")
-            # 👉 关键：最小 sleep + 再次尝试
+            # 👉 minimum sleep + retry
+            # 关键：最小 sleep + 再次尝试
             await asyncio.sleep(wait_time)
 
 
 
-# 全局有状态的限流器
 class RateLimiter:
+    """
+    Global stateful rate limiter.
+    全局有状态的限流器
+    """
     def __init__(self):
         self._buckets: dict[str, TokenBucket] = {}
         self._locks: dict[str, asyncio.Lock] = {}
@@ -65,11 +69,11 @@ class RateLimiter:
         await bucket.acquire(tokens)
 
     async def _get_bucket(self, key: str, rate: float, capacity: int) -> TokenBucket:
-        # 快路径
+        # fast path: return bucket if it exists already
         if key in self._buckets:
             return self._buckets[key]
 
-        # 初始化锁
+        # initialize lock
         if key not in self._locks:
             self._locks[key] = asyncio.Lock()
 
@@ -92,13 +96,15 @@ class RateLimitStrategy(RequestStrategy):
         )
 
     def _build_key(self, ctx) -> str:
-        # 👉 可扩展维度
-        # 当前：按 source 限流
+        # 👉 expandable dimensions 可扩展维度
+        # current: limit by source 当前仅按 source 限流
         return ctx.source
 
-        # 未来可以：
-        # return f"{ctx.source}:{ctx.api}"
-        # return f"{ctx.source}:{ctx.user_id}"
+        # future can: limit by api or user_id
+        '''
+        return f"{ctx.source}:{ctx.api}"
+        return f"{ctx.source}:{ctx.user_id}"
+        '''
 
     async def before_request(self, ctx, request_kwargs: dict):
         cfg = ctx.config.rate_limit

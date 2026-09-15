@@ -52,12 +52,14 @@ class CookieManager:
         self._spider_tool = spider_tool
         self._redis = redis
 
-        # 👉 多 key 缓存
+        # 多 key 缓存
+        # multi key cache
         self._cookies: dict[str, list[str]] = {}
         self._locks: dict[str, asyncio.Lock] = {}
         self._refresh_locks: dict[str, asyncio.Lock] = {}
 
     # ========================
+    # public interface
     # 对外接口
     # ========================
 
@@ -84,11 +86,12 @@ class CookieManager:
             await self._set_cookies(key, cookies, ctx)
 
     # ========================
+    # core logic
     # 核心逻辑
     # ========================
 
     def _build_key(self, ctx) -> str:
-        # 👉 核心：按 cache_key 隔离
+        # core: use cache_key to isolate cookies for different requests
         return ctx.config.auth.cache_key
 
     async def _ensure_cookies(self, ctx, key: str) -> list[str]:
@@ -102,7 +105,7 @@ class CookieManager:
             if key not in self._cookies:
                 cookies = await self._load_cookies(ctx, key)
                 if not cookies:
-                    raise RuntimeError(f"无法初始化 cookies: {key}")
+                    raise RuntimeError(f"failed to initialize cookies: {key}")
 
                 await self._set_cookies(key, cookies, ctx)
 
@@ -111,12 +114,14 @@ class CookieManager:
     async def _load_cookies(self, ctx: RequestContext, key: str) -> list[str] | None:
         cfg = ctx.config.auth
 
-        # 1️⃣ Redis
+        # 1️⃣ try to get cookies from Redis first
+        # 先从Redis中获取cookies
         cookies = await self._get_rds_cookies(key)
         if cookies:
             return cookies
 
-        # 2️⃣ 浏览器抓取
+        # 2️⃣ try to get cookies from browser
+        # 从浏览器中获取cookies
         cookies = await self._spider_tool.get_cookie(
             cfg.home_url,
             cfg.cookie_num,
@@ -128,6 +133,7 @@ class CookieManager:
         return None
 
     # ========================
+    # storage layer
     # 存储层
     # ========================
 
@@ -169,7 +175,8 @@ class CookieAuthStrategy(AuthStrategy):
         headers["Cookie"] = cookie
 
     async def on_error(self, ctx: RequestContext, error):
-        # 此时的error实际上是httpx.Response
+        # error is a httpx.Response object
+        # error是httpx.Response对象
         if ctx.config.auth is None:
             return
         if not isinstance(ctx.config.auth, CookieAuthConfig):

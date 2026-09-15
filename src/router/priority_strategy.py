@@ -10,7 +10,8 @@ class PriorityStrategy:
     def sort(self, providers: list[Provider], capability: Capability) -> list[Provider]:
         priority_map = self._config.get(capability, [])
 
-        # 按priority排序, priority越小越靠前
+        # order by priority asc
+        # 按 priority 升序排序
         return sorted(
             providers,
             key=lambda p: priority_map[p.source]["priority"]

@@ -3,8 +3,10 @@ from playwright.async_api import async_playwright
 
 class PlaywrightTool:
     """
-    linux must use the chromium browser that is installed by the playwright.
+    linux must use the Chromium browser that is installed by the playwright.
     installation command: uv add playwright && playwright install chromium
+    linux 中要使用 playwright 安装的 Chromium 浏览器
+    linux 安装 chromium 浏览器需要使用以下命令：uv add playwright && playwright install chromium
     """
     def __init__(self, browser_path: str = None):
         self._browser_path = browser_path

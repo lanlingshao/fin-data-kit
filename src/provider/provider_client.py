@@ -40,8 +40,11 @@ class ProviderClient:
         return await self.request("POST", url, **kwargs)
 
 
-# 数据源客户端注册器（懒加载）
 class ProviderClientRegistry(Generic[Source]):
+    """
+    data source client registry(lazy load pattern).
+    数据源客户端注册器（懒加载）
+    """
     def __init__(self, registry, http_client):
         self._registry = registry
         self._client = http_client

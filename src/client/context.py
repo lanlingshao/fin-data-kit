@@ -4,10 +4,12 @@ from dataclasses import dataclass, field
 from src.config.source_config import SourceConfig
 
 
-# 请求上下文
-# 无状态，每次请求都创建一个新的上下文对象
 @dataclass
 class RequestContext:
+    """
+    Stateless, each request creates a new context.
+    无状态，每次请求都创建一个新的上下文对象
+    """
     source: str
     url: str
     method: str

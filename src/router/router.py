@@ -31,6 +31,8 @@ class ProviderRouter:
 
             try:
                 # 不用get的原因是想让直接抛出异常，好在调试的时候就发现问题
+                # the reason of not using get is to directly throw exception
+                # so that the problem can be discovered during debugging
                 method = p.capabilities[capability]
                 fn = getattr(p, method)
                 return await fn(*args, **kwargs)

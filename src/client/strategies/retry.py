@@ -32,6 +32,7 @@ class RetryStrategy(RequestStrategy, ABC):
 
     async def on_error(self, ctx: RequestContext, error):
         # retry 指数退避策略
+        # exponential backoff strategy
         max_retries = ctx.config.retry.max_retries if ctx.config.retry else self.max_retries
         if ctx.retry_count >= max_retries:
             raise error
@@ -43,14 +44,3 @@ class RetryStrategy(RequestStrategy, ABC):
         ctx.retry_count += 1
         await asyncio.sleep(delay)
         ctx.should_retry = True
-
-
-        # max_retries = self.max_retries
-        # if ctx.config.retry.max_retries:
-        #     max_retries = ctx.config.retry.max_retries
-        #
-        # if ctx.retry_count < max_retries:
-        #     ctx.retry_count += 1
-        #     ctx.should_retry = True
-        #     return
-        # raise error
