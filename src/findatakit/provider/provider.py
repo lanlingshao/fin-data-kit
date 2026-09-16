@@ -1,8 +1,8 @@
 from abc import ABC
 from typing import Generic
 
-from src.provider.capability import Capability
-from src.provider.data_source import Source
+from src.findatakit.provider.capability import Capability
+from src.findatakit.provider.data_source import Source
 
 
 class Provider(ABC, Generic[Source, Capability]):

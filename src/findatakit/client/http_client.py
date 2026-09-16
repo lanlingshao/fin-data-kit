@@ -2,10 +2,10 @@ import logging
 
 import httpx
 
-from src.client.context import RequestContext
-from src.client.strategies.base import RequestStrategy
-from src.client.strategies.retry import RetryException
-from src.config.source_config import SourceConfig
+from src.findatakit.client.context import RequestContext
+from src.findatakit.client.strategies.base import RequestStrategy
+from src.findatakit.client.strategies.retry import RetryException
+from src.findatakit.config.source_config import SourceConfig
 
 logger = logging.getLogger(__name__)
 

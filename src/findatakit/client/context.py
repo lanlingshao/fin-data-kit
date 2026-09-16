@@ -1,7 +1,7 @@
 import time
 from dataclasses import dataclass, field
 
-from src.config.source_config import SourceConfig
+from src.findatakit.config.source_config import SourceConfig
 
 
 @dataclass

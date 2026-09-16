@@ -1,6 +1,6 @@
 from playwright.async_api import async_playwright
 
-from src.cookie.cookie_provider import CookieProvider
+from src.findatakit.cookie.cookie_provider import CookieProvider
 
 
 class PlaywrightTool(CookieProvider):

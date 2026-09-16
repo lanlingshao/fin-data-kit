@@ -1,6 +1,6 @@
-from src.config.capability_priority_config import CapabilityPriorityConfig
-from src.provider.capability import Capability
-from src.provider.provider import Provider
+from src.findatakit.config import CapabilityPriorityConfig
+from src.findatakit.provider.capability import Capability
+from src.findatakit.provider.provider import Provider
 
 
 class PriorityStrategy:

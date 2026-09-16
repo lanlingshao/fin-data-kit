@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Generic
 
-from src.provider.capability import Capability
-from src.provider.data_source import Source
+from src.findatakit.provider.capability import Capability
+from src.findatakit.provider.data_source import Source
 
 
 @dataclass

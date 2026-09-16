@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import ClassVar, Optional, Union, Generic
 
-from src.provider.data_source import Source
+from src.findatakit.provider.data_source import Source
 
 
 class AuthType(StrEnum):

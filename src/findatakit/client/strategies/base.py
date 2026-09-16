@@ -1,7 +1,7 @@
 
 from abc import ABC, abstractmethod
 
-from src.client.context import RequestContext
+from src.findatakit.client.context import RequestContext
 
 
 class RequestStrategy(ABC):

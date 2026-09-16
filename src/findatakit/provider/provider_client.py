@@ -2,9 +2,9 @@ from typing import Generic
 
 import httpx
 
-from src.client.http_client import HttpClient
-from src.provider.data_source import Source
-from src.registry.source_config_registry import SourceConfigRegistry
+from src.findatakit.client import HttpClient
+from src.findatakit.provider.data_source import Source
+from src.findatakit.registry.source_config_registry import SourceConfigRegistry
 
 
 class ProviderClient:
