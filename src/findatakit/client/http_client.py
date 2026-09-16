@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 
 
 class HttpClient:
-
     def __init__(self, strategies: list[RequestStrategy] | None = None):
         self._client = httpx.AsyncClient()
         self._strategies = strategies or []

@@ -4,7 +4,6 @@ from src.findatakit.provider.provider import Provider
 
 
 class PriorityStrategy:
-
     def __init__(self, config: CapabilityPriorityConfig):
         self._config = config
 

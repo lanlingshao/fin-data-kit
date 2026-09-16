@@ -17,7 +17,6 @@ class ProviderRouter:
         self._health = health
 
     async def call(self, capability: Capability, *args, **kwargs):
-
         providers = self._registry.get_by_capability(capability)
         providers = self._strategy.sort(providers, capability)
 
@@ -25,7 +24,6 @@ class ProviderRouter:
         last_error_traceback = None
 
         for p in providers:
-
             if not self._health.is_available(p):
                 continue
 
@@ -36,7 +34,6 @@ class ProviderRouter:
                 method = p.capabilities[capability]
                 fn = getattr(p, method)
                 return await fn(*args, **kwargs)
-
             except Exception as e:
                 self._health.record_failure(p)
                 last_error = e

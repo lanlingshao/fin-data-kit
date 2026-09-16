@@ -1,0 +1,49 @@
+from enum import IntEnum, StrEnum
+
+from src.findatakit.provider.enum import DataSourceId, CapabilityId
+
+
+class FinDataSource(DataSourceId):
+    Xueqiu = "xueqiu"
+    Eastmoney = "eastmoney"
+
+
+class FinCapability(CapabilityId):
+    DailyKine = "daily_kline"
+
+
+class ApiMethod(StrEnum):
+    GetDailyKline = "get_daily_kline"
+
+
+class AdjustType(IntEnum):
+    NO = 0  # 不复权
+    PRE = 1  # 前复权
+    POST = 2  # 后复权
+
+
+class CustomException(Exception):
+    """
+    自定义异常基类
+    """
+
+    def __init__(
+        self,
+        code: int | None,
+        msg: str | None,
+    ) -> None:
+        """
+        - code (int): 业务状态码。
+        - msg (str): 错误消息。
+        """
+        super().__init__(msg)  # 调用父类初始化方法
+        self.code: int | None = code
+        self.msg: str | None = msg
+
+    def __str__(self) -> str | None:
+        """返回异常消息
+
+        返回:
+        - str: 异常消息
+        """
+        return self.msg

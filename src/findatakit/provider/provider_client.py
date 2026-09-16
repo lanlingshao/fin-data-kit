@@ -2,7 +2,7 @@ from typing import Generic
 
 import httpx
 
-from src.findatakit.client import HttpClient
+from src.findatakit.client.http_client import HttpClient
 from src.findatakit.provider.enum import Source
 from src.findatakit.config.source_config_registry import SourceConfigRegistry
 

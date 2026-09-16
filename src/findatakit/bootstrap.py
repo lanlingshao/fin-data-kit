@@ -20,7 +20,6 @@ from .router.router import ProviderRouter
 
 def create_client(
     config: FinDataKitConfig,
-    *,
     cookie_provider: CookieProvider | None = None,
     cache: Cache | None = None,
 ) -> FinDataKit:

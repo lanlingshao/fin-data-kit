@@ -1,7 +1,6 @@
 import time
 
 class ProviderHealth:
-
     def __init__(self):
         self._failures = {}
         self._cooldown = 60
