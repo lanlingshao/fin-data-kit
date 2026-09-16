@@ -4,12 +4,13 @@ import random
 from abc import ABC, abstractmethod
 
 import httpx
-from redis.asyncio.client import Redis
 
+from src.cache.cache import ICache
 from src.client.context import RequestContext
 from src.client.strategies.base import RequestStrategy
 from src.client.strategies.retry import RetryException
 from src.config.source_config import CookieAuthConfig
+from src.tool.playwright import PlaywrightTool
 
 
 class AuthStrategy(ABC):
@@ -47,10 +48,10 @@ class AccountAuthStrategy(AuthStrategy):
 
 
 class CookieManager:
-
-    def __init__(self, spider_tool, redis: Redis):
+    def __init__(self, spider_tool: PlaywrightTool, cache: ICache , cookie_expire: int = None):
         self._spider_tool = spider_tool
-        self._redis = redis
+        self._cache = cache
+        self._cookie_expire = cookie_expire if cookie_expire else 3600 * 24 * 60
 
         # 多 key 缓存
         # multi key cache
@@ -138,17 +139,13 @@ class CookieManager:
     # ========================
 
     async def _get_rds_cookies(self, key: str) -> list[str] | None:
-        cookies_str = await self._redis.get(key)
+        cookies_str = await self._cache.get(key)
         if not cookies_str:
             return None
         return json.loads(cookies_str)
 
     async def _set_rds_cookies(self, key: str, cookies: list[str]):
-        await self._redis.set(
-            key,
-            json.dumps(cookies),
-            ex=3600 * 24 * 60,
-        )
+        await self._cache.set(key, json.dumps(cookies), expire=self._cookie_expire)
 
     async def _set_cookies(self, key: str, cookies: list[str], ctx):
         self._cookies[key] = cookies
