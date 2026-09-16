@@ -1,7 +1,9 @@
 from playwright.async_api import async_playwright
 
+from src.cookie.cookie_provider import CookieProvider
 
-class PlaywrightTool:
+
+class PlaywrightTool(CookieProvider):
     """
     linux must use the Chromium browser that is installed by the playwright.
     installation command: uv add playwright && playwright install chromium
@@ -21,13 +23,13 @@ class PlaywrightTool:
             headless=headless,
         )
 
-    async def get_cookie(self, url: str, cookie_num: int) -> list[str]:
+    async def get_cookies(self, url: str, count: int) -> list[str]:
         cookie_list: list[str] = []
 
         async with async_playwright() as p:
             browser = await self._launch_browser(p, headless=True)
 
-            for _ in range(cookie_num):
+            for _ in range(count):
                 context = await browser.new_context(
                     user_agent=(
                         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "

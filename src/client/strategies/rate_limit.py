@@ -86,8 +86,8 @@ class RateLimiter:
 
 class RateLimitStrategy(RequestStrategy):
 
-    def __init__(self, limiter: RateLimiter):
-        self._limiter = limiter
+    def __init__(self):
+        self._limiter = RateLimiter()
 
     def support(self, ctx) -> bool:
         return (

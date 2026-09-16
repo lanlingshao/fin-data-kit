@@ -5,12 +5,12 @@ from abc import ABC, abstractmethod
 
 import httpx
 
-from src.cache.cache import ICache
+from src.cache.cache import Cache
 from src.client.context import RequestContext
 from src.client.strategies.base import RequestStrategy
 from src.client.strategies.retry import RetryException
 from src.config.source_config import CookieAuthConfig
-from src.tool.playwright import PlaywrightTool
+from src.cookie.cookie_provider import CookieProvider
 
 
 class AuthStrategy(ABC):
@@ -48,8 +48,8 @@ class AccountAuthStrategy(AuthStrategy):
 
 
 class CookieManager:
-    def __init__(self, spider_tool: PlaywrightTool, cache: ICache , cookie_expire: int = None):
-        self._spider_tool = spider_tool
+    def __init__(self, cookie_provider: CookieProvider, cache: Cache, cookie_expire: int = None):
+        self._cookie_provider = cookie_provider
         self._cache = cache
         self._cookie_expire = cookie_expire if cookie_expire else 3600 * 24 * 60
 
@@ -72,26 +72,21 @@ class CookieManager:
 
     async def refresh(self, ctx):
         key = self._build_key(ctx)
-
         if key not in self._refresh_locks:
             self._refresh_locks[key] = asyncio.Lock()
 
         async with self._refresh_locks[key]:
             cfg = ctx.config.auth
-
-            cookies = await self._spider_tool.get_cookie(
-                cfg.home_url,
-                cfg.cookie_num,
-            )
-
-            await self._set_cookies(key, cookies, ctx)
+            cookies = await self._cookie_provider.get_cookies(cfg.home_url, cfg.cookie_num)
+            await self._set_cookies(key, cookies)
 
     # ========================
     # core logic
     # 核心逻辑
     # ========================
 
-    def _build_key(self, ctx) -> str:
+    @staticmethod
+    def _build_key(ctx) -> str:
         # core: use cache_key to isolate cookies for different requests
         return ctx.config.auth.cache_key
 
@@ -108,7 +103,7 @@ class CookieManager:
                 if not cookies:
                     raise RuntimeError(f"failed to initialize cookies: {key}")
 
-                await self._set_cookies(key, cookies, ctx)
+                await self._set_cookies(key, cookies)
 
         return self._cookies[key]
 
@@ -123,7 +118,7 @@ class CookieManager:
 
         # 2️⃣ try to get cookies from browser
         # 从浏览器中获取cookies
-        cookies = await self._spider_tool.get_cookie(
+        cookies = await self._cookie_provider.get_cookies(
             cfg.home_url,
             cfg.cookie_num,
         )
@@ -145,9 +140,9 @@ class CookieManager:
         return json.loads(cookies_str)
 
     async def _set_rds_cookies(self, key: str, cookies: list[str]):
-        await self._cache.set(key, json.dumps(cookies), expire=self._cookie_expire)
+        await self._cache.set(key, json.dumps(cookies), ex=self._cookie_expire)
 
-    async def _set_cookies(self, key: str, cookies: list[str], ctx):
+    async def _set_cookies(self, key: str, cookies: list[str]):
         self._cookies[key] = cookies
         await self._set_rds_cookies(key, cookies)
 

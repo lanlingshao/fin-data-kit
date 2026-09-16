@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 class HttpClient:
 
-    def __init__(self, http_client: httpx.AsyncClient, strategies: list[RequestStrategy] | None = None):
-        self._client = http_client
+    def __init__(self, strategies: list[RequestStrategy] | None = None):
+        self._client = httpx.AsyncClient()
         self._strategies = strategies or []
 
     async def request(self, method, url, source: str, config: SourceConfig, **kwargs):
