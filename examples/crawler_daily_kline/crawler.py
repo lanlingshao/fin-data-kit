@@ -2,33 +2,17 @@ import asyncio
 
 from redis.asyncio.client import Redis
 
-from src.findatakit.client.http_client import HttpClient
-from src.findatakit.client.strategies.auth import CookieManager, CookieAuthStrategy, AuthAdapter, NoAuthStrategy
-from src.findatakit.client.strategies.rate_limit import RateLimitStrategy
-from src.findatakit.client.strategies.retry import RetryStrategy
+from examples.crawler_daily_kline.constant import FinDataSource, FinCapability, AdjustType
+from src.findatakit.bootstrap import create_client
 from src.findatakit.config.capability_priority_config import CapabilityPriorityConfig, CapabilityPriority
+from src.findatakit.config.config import FinDataKitConfig
 from src.findatakit.config.source_config import SourceConfig, RetryConfig, RateLimitConfig, CookieAuthConfig
-from src.findatakit.provider.enum import CapabilityId, DataSourceId
-from src.findatakit.provider.provider_client import ProviderClientRegistry
-from src.findatakit.provider.provider_registry import build_provider_registry
-from src.findatakit.config.source_config_registry import create_source_config_registry
-from src.findatakit.router.health import ProviderHealth
-from src.findatakit.router.priority_strategy import PriorityStrategy
-from src.findatakit.router.router import ProviderRouter
 from src.findatakit.cookie.playwright import PlaywrightTool
 
+# ------------------------------
+# 1. build config
+# ------------------------------
 
-class FinDataSource(DataSourceId):
-    Xueqiu = "xueqiu"
-    Eastmoney = "eastmoney"
-
-
-class FinCapability(CapabilityId):
-    DailyKine = "daily_kline"
-
-
-
-# 1. init config
 source_confs = [
     SourceConfig(
         source=FinDataSource.Xueqiu,
@@ -62,51 +46,38 @@ capability_priority_conf = CapabilityPriorityConfig(
     }
 )
 
-
-
-
-playwright_tool =  PlaywrightTool("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
-redis = Redis(host="localhost", port=6379, db=0, password="")
-
-cookie_manager = CookieManager(cookie_provider=playwright_tool, cache=redis)
-
-rate_limiter_strategy = RateLimitStrategy()
-retry_strategy = RetryStrategy()
-no_auth_strategy = NoAuthStrategy()
-cookie_auth_strategy = CookieAuthStrategy(cookie_manager=cookie_manager)
-no_auth_adapter = AuthAdapter(auth=no_auth_strategy)
-cookie_auth_adapter = AuthAdapter(auth=cookie_auth_strategy)
-strategies = [
-    rate_limiter_strategy,
-    retry_strategy,
-    no_auth_adapter,
-    cookie_auth_adapter,
-]
-
-http_client = HttpClient(strategies=strategies)
-source_config_registry = create_source_config_registry(configs=source_confs)
-provider_client_factory = ProviderClientRegistry(
-    registry=source_config_registry,
-    http_client=http_client,
-)
-provider_registry = build_provider_registry(provider_client_factory=provider_client_factory)
-priority_strategy = PriorityStrategy(config=capability_priority_conf)
-provider_health = ProviderHealth()
-provider_router = ProviderRouter(
-    registry=provider_registry,
-    strategy=priority_strategy,
-    health=provider_health,
+config = FinDataKitConfig(
+    sources=source_confs,
+    capability_priority=capability_priority_conf,
 )
 
+# ------------------------------
+# 2. create client
+# ------------------------------
 
+# if you use Mac, use the browser_path below, if you use linux, just set it to None
+browser_path = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+cookie_provider =  PlaywrightTool(browser_path)
+
+# you can use any cache, like redis, memcache, etc. here I use redis.
+cache = Redis(host="localhost", port=6379, db=0, password="")
+client = create_client(
+    config=config,
+    cookie_provider=cookie_provider,
+    cache=cache,
+)
 
 
 async def crawl():
-    pass
-
-async def main():
-    await crawl()
+    res = await client.get(
+        FinCapability.DailyKine,
+        symbol="000001.SZ",
+        start_date="2023-01-01",
+        end_date="2023-01-31",
+        adjust=AdjustType.NO,
+    )
+    print(res)
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    asyncio.run(crawl())
