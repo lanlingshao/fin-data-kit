@@ -30,6 +30,7 @@ class BaseAuthConfig:
 @dataclass
 class CookieAuthConfig(BaseAuthConfig):
     type = AuthType.COOKIE
+
     home_url: str
     cache_key: str
     cookie_num: int = 20
@@ -40,6 +41,7 @@ class CookieAuthConfig(BaseAuthConfig):
 @dataclass
 class AccountAuthConfig(BaseAuthConfig):
     type = AuthType.ACCOUNT
+
     username: str
     password: str
     login_url: str
@@ -60,6 +62,6 @@ class SourceConfig(Generic[Source]):
     source: Source
     retry: RetryConfig
     rate_limit: RateLimitConfig
-    metrics: MetricsConfig
+    metrics: MetricsConfig | None = None
     headers: dict[str, str] | None = None
     auth: Optional[AuthConfig] = None

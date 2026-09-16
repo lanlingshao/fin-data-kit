@@ -1,14 +1,15 @@
+from src.config.capability_priority_config import CapabilityPriorityConfig
 from src.provider.capability import Capability
 from src.provider.provider import Provider
 
 
 class PriorityStrategy:
 
-    def __init__(self, config):
+    def __init__(self, config: CapabilityPriorityConfig):
         self._config = config
 
     def sort(self, providers: list[Provider], capability: Capability) -> list[Provider]:
-        priority_map = self._config.get(capability, [])
+        priority_map = self._config.capability_priority.get(capability, {})
 
         # order by priority asc
         # 按 priority 升序排序

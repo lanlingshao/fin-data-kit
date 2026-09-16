@@ -2,7 +2,7 @@ from enum import StrEnum
 from typing import TypeVar
 
 
-class DataSource(StrEnum):
+class DataSourceId(StrEnum):
     pass
 
-Source = TypeVar("Source", bound=DataSource)
+Source = TypeVar("Source", bound=DataSourceId)
