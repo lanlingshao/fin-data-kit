@@ -10,7 +10,7 @@ class RetryException(Exception):
     pass
 
 
-class RetryStrategy(RequestStrategy, ABC):
+class RetryStrategy(RequestStrategy):
     def __init__(
         self,
         max_retries=0,
