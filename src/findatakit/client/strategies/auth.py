@@ -14,7 +14,6 @@ from src.findatakit.cookie.cookie_provider import CookieProvider
 
 
 class AuthStrategy(ABC):
-
     @abstractmethod
     async def apply(self, ctx: RequestContext, request_kwargs: dict):
         pass
@@ -27,7 +26,6 @@ class AuthStrategy(ABC):
 
 
 class NoAuthStrategy(AuthStrategy):
-
     async def apply(self, ctx, request_kwargs):
         pass
 
@@ -48,6 +46,11 @@ class AccountAuthStrategy(AuthStrategy):
 
 
 class CookieManager:
+    """
+    Cookie manager
+
+    the purpose of this class is to store the cookies in cache, and refresh them when they expire
+    """
     def __init__(self, cookie_provider: CookieProvider, cache: Cache, cookie_expire: int = None):
         self._cookie_provider = cookie_provider
         self._cache = cache
@@ -148,7 +151,6 @@ class CookieManager:
 
 
 class CookieAuthStrategy(AuthStrategy):
-
     def __init__(self, cookie_manager: CookieManager):
         self._cookie_manager = cookie_manager
 
@@ -157,7 +159,6 @@ class CookieAuthStrategy(AuthStrategy):
             return False
         error_code = response.json().get('error_code')
         return error_code == ctx.config.auth.refresh_error_code
-
 
     async def apply(self, ctx: RequestContext, request_kwargs):
         cookie = await self._cookie_manager.get_cookie(ctx)
@@ -177,7 +178,6 @@ class CookieAuthStrategy(AuthStrategy):
 
 
 class AuthAdapter(RequestStrategy):
-
     def __init__(self, auth: AuthStrategy):
         self._auth = auth
 
