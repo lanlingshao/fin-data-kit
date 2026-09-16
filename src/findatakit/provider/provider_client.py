@@ -3,8 +3,8 @@ from typing import Generic
 import httpx
 
 from src.findatakit.client import HttpClient
-from src.findatakit.provider.data_source import Source
-from src.findatakit.registry.source_config_registry import SourceConfigRegistry
+from src.findatakit.provider.enum import Source
+from src.findatakit.config.source_config_registry import SourceConfigRegistry
 
 
 class ProviderClient:

@@ -2,7 +2,7 @@ from collections import defaultdict
 
 from src.findatakit.provider.provider_class_registry import ProviderClassRegistry
 from src.findatakit.provider.provider_client import ProviderClientRegistry
-from src.findatakit.provider.capability import Capability
+from src.findatakit.provider.enum import Capability
 from src.findatakit.provider.provider import Provider
 
 

@@ -1,7 +1,7 @@
 from typing import Dict, Generic
 
 from src.findatakit.config.source_config import SourceConfig
-from src.findatakit.provider.data_source import Source
+from src.findatakit.provider.enum import Source
 
 
 class SourceConfigRegistry(Generic[Source]):

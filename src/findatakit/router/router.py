@@ -1,7 +1,7 @@
 import logging
 import traceback
 
-from src.findatakit.provider.capability import Capability
+from src.findatakit.provider.enum import Capability
 from src.findatakit.provider.provider_registry import ProviderRegistry
 from src.findatakit.router.health import ProviderHealth
 from src.findatakit.router.priority_strategy import PriorityStrategy

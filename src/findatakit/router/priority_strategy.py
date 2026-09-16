@@ -1,5 +1,5 @@
-from src.findatakit.config import CapabilityPriorityConfig
-from src.findatakit.provider.capability import Capability
+from src.findatakit.config.capability_priority_config import CapabilityPriorityConfig
+from src.findatakit.provider.enum import Capability
 from src.findatakit.provider.provider import Provider
 
 
