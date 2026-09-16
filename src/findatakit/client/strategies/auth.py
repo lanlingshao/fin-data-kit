@@ -30,21 +30,6 @@ class NoAuthStrategy(AuthStrategy):
         pass
 
 
-class AccountAuthStrategy(AuthStrategy):
-    def __init__(
-        self,
-        username: str,
-        password: str,
-        login_url: str,
-    ):
-        self.username = username
-        self.password = password
-        self.login_url = login_url
-
-    async def apply(self, ctx: RequestContext, request_kwargs):
-        pass
-
-
 class CookieManager:
     """
     Cookie manager

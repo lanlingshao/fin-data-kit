@@ -8,8 +8,6 @@ from src.findatakit.provider.enum import Source
 class AuthType(StrEnum):
     NONE = "none"
     COOKIE = "cookie"
-    ACCOUNT = "account"
-    TOKEN = "token"
 
 
 @dataclass
@@ -38,18 +36,8 @@ class CookieAuthConfig(BaseAuthConfig):
     refresh_error_code: str = "400016"
 
 
-@dataclass
-class AccountAuthConfig(BaseAuthConfig):
-    type = AuthType.ACCOUNT
-
-    username: str
-    password: str
-    login_url: str
-
-
 AuthConfig = Union[
     CookieAuthConfig,
-    AccountAuthConfig,
 ]
 
 @dataclass
