@@ -36,7 +36,9 @@ uv run playwright install chromium
 
 ## Quick Start
 
-The Chinese financial data example is located in `examples/crawl_cn_fin_data`. Start Redis, then run:
+The Chinese financial data example is located in `examples/crawl_cn_fin_data`. 
+
+run:
 
 ```bash
 uv run python -m examples.crawl_cn_fin_data.crawler

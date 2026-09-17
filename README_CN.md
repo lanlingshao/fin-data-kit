@@ -36,7 +36,9 @@ uv run playwright install chromium
 
 ## 快速开始
 
-仓库中的中国金融数据示例在 `examples/crawl_cn_fin_data`。启动 Redis 后运行：
+仓库中的中国金融数据示例在 `examples/crawl_cn_fin_data`。
+
+运行：
 
 ```bash
 uv run python -m examples.crawl_cn_fin_data.crawler
