@@ -189,7 +189,7 @@ The current test suite covers configuration registration, provider capability in
 ## Project Structure
 
 ```text
-src/findatakit/
+findatakit/
 ├── bootstrap.py              # Assemble the client and default strategies
 ├── client/                   # HTTP client, retry, rate limiting, and auth strategies
 ├── config/                   # Data-source and priority configuration

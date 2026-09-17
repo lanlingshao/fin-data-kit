@@ -189,7 +189,7 @@ SourceConfig(
 ## 目录结构
 
 ```text
-src/findatakit/
+findatakit/
 ├── bootstrap.py              # 组装客户端和默认策略
 ├── client/                   # HTTP 客户端、重试、限速、认证策略
 ├── config/                   # 数据源和优先级配置
