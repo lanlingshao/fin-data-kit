@@ -9,3 +9,4 @@ class FinDataKitConfig:
     sources: list[SourceConfig]
     capability_priority: CapabilityPriorityConfig
     provider_path: str
+    cookie_expire: int = 3600 * 24 * 60

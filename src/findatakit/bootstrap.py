@@ -27,6 +27,7 @@ def create_client(
     cookie_manager = CookieManager(
         cookie_provider=cookie_provider,
         cache=cache,
+        cookie_expire=config.cookie_expire,
     )
 
     http_client = HttpClient(
