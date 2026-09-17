@@ -21,8 +21,8 @@ from .router.router import ProviderRouter
 
 def create_client(
     config: FinDataKitConfig,
-    cookie_provider: CookieProvider | None = None,
-    cache: Cache | None = None,
+    cookie_provider: CookieProvider,
+    cache: Cache,
 ) -> FinDataKit:
     cookie_manager = CookieManager(
         cookie_provider=cookie_provider,

@@ -4,15 +4,18 @@ from src.findatakit.provider.enum import DataSourceId, CapabilityId
 
 
 class FinDataSource(DataSourceId):
+    SSEExchange = "sse_exchange" # china shanghai exchange 上海证券交易所
     Xueqiu = "xueqiu"
     Eastmoney = "eastmoney"
 
 
 class FinCapability(CapabilityId):
-    DailyKine = "daily_kline"
+    SSEStockList = "sse_stock_list"
+    CnDailyKine = "cn_daily_kline"
 
 
 class ApiMethod(StrEnum):
+    GetSSEStockList = "get_sse_stock_list"
     GetDailyKline = "get_daily_kline"
 
 

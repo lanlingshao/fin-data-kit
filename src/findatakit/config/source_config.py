@@ -49,8 +49,8 @@ class MetricsConfig:
 @dataclass
 class SourceConfig(Generic[Source]):
     source: Source
-    retry: RetryConfig
-    rate_limit: RateLimitConfig
+    retry: RetryConfig | None = None
+    rate_limit: RateLimitConfig | None = None
     metrics: MetricsConfig | None = None
     headers: dict[str, str] | None = None
     auth: Optional[AuthConfig] = None
