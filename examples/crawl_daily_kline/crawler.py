@@ -1,8 +1,9 @@
 import asyncio
+from datetime import date
 
 from redis.asyncio.client import Redis
 
-from examples.crawler_daily_kline.constant import FinDataSource, FinCapability, AdjustType
+from examples.crawl_daily_kline.constant import FinDataSource, FinCapability
 from src.findatakit.bootstrap import create_client
 from src.findatakit.config.capability_priority_config import CapabilityPriorityConfig, CapabilityPriority
 from src.findatakit.config.config import FinDataKitConfig
@@ -13,6 +14,7 @@ from src.findatakit.cookie.playwright import PlaywrightTool
 # 1. build config
 # ------------------------------
 
+# 1.1 build source config
 source_confs = [
     SourceConfig(
         source=FinDataSource.Xueqiu,
@@ -21,6 +23,7 @@ source_confs = [
         },
         retry=RetryConfig(max_retries=2),
         rate_limit=RateLimitConfig(rate=10, capacity=20),
+        # xueqiu need cookie to get daily kline
         auth=CookieAuthConfig(
             home_url="https://xueqiu.com",
             cache_key="xueqiu_cookies",
@@ -33,10 +36,14 @@ source_confs = [
         source=FinDataSource.Eastmoney,
         retry=RetryConfig(max_retries=2),
         rate_limit=RateLimitConfig(rate=10, capacity=100),
+        # eastmoney not need auth to get daily kline
         auth=None,
     )
 ]
 
+# 1.2 build capability priority config, we can set multiple data source, and set priority to choose the data source
+#     the smaller the priority number is, the earlier it is chosen. if two data source have the same priority,
+#     the first one is chosen. if the first failed, the second one is chosen.
 capability_priority_conf = CapabilityPriorityConfig(
     capability_priority={
         FinCapability.DailyKine: {
@@ -49,6 +56,7 @@ capability_priority_conf = CapabilityPriorityConfig(
 config = FinDataKitConfig(
     sources=source_confs,
     capability_priority=capability_priority_conf,
+    provider_path="examples.crawl_daily_kline",
 )
 
 # ------------------------------
@@ -69,12 +77,14 @@ client = create_client(
 
 
 async def crawl():
+    # argument is the same of provider method except capability
+    # for example, in examples/crawler_daily_kline/provider.py, the method is get_daily_kline
     res = await client.get(
         FinCapability.DailyKine,
-        symbol="000001.SZ",
-        start_date="2023-01-01",
-        end_date="2023-01-31",
-        adjust=AdjustType.NO,
+        symbol="000001",
+        exchange="SZ",
+        start_date=date(2026, 1, 1),
+        end_date=date(2026, 1, 31),
     )
     print(res)
 
