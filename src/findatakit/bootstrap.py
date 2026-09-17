@@ -1,4 +1,5 @@
 from .cache.cache import Cache
+from .cache.local_cache import LocalCache
 from .client.http_client import HttpClient
 from .client.strategies.auth import (
     AuthAdapter,
@@ -22,8 +23,12 @@ from .router.router import ProviderRouter
 def create_client(
     config: FinDataKitConfig,
     cookie_provider: CookieProvider,
-    cache: Cache,
+    cache: Cache | None = None,
 ) -> FinDataKit:
+    # if cache is None, use LocalCache as default
+    if cache is None:
+        cache = LocalCache()
+
     cookie_manager = CookieManager(
         cookie_provider=cookie_provider,
         cache=cache,

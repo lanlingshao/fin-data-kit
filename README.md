@@ -22,10 +22,10 @@ cd fin-data-kit
 uv sync
 ```
 
-The Chinese financial data example also uses Redis and pandas:
+The Chinese financial data example also uses pandas:
 
 ```bash
-uv add redis pandas
+uv add pandas
 ```
 
 If Playwright is used to obtain cookies, install its browser binaries:

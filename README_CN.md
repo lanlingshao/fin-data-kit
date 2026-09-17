@@ -22,10 +22,10 @@ cd fin-data-kit
 uv sync
 ```
 
-中国金融数据示例还使用 Redis 和 pandas：
+中国金融数据示例还使用 pandas：
 
 ```bash
-uv add redis pandas
+uv add pandas
 ```
 
 如果通过 Playwright 获取 Cookie，需要安装浏览器内核：

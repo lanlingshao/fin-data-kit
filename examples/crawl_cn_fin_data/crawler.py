@@ -74,12 +74,14 @@ config = FinDataKitConfig(
 browser_path = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 cookie_provider =  PlaywrightTool(browser_path)
 
-# you can use any cache, like redis, memcache, TTLCache, etc. here I use redis to store the cookies.
-cache = Redis(host="localhost", port=6379, db=0, password="")
+# here I use no custom cache, default LocalCache is to store the cookies.
+# you can use any cache, like redis, memcache, etc.
+
+# cache = Redis(host="localhost", port=6379, db=0, password="")
 client = create_client(
     config=config,
     cookie_provider=cookie_provider,
-    cache=cache,
+    cache=None,
 )
 
 
