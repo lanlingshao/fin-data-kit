@@ -1,7 +1,7 @@
 import asyncio
 import time
 
-from src.findatakit.client.strategies.base import RequestStrategy
+from findatakit.client.strategies.base import RequestStrategy
 
 
 class TokenBucket:

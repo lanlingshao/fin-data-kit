@@ -59,11 +59,11 @@ daily_klines = await client.get(
 每个启用的数据源对应一份 `SourceConfig`；`retry`、`rate_limit`、`headers` 和 `auth` 都是可选项。
 
 ```python
-from src.findatakit.config.capability_priority_config import (
+from findatakit import (
     CapabilityPriority, CapabilityPriorityConfig,
 )
-from src.findatakit.config.config import FinDataKitConfig
-from src.findatakit.config.source_config import (
+from findatakit import FinDataKitConfig
+from findatakit import (
     RateLimitConfig, RetryConfig, SourceConfig,
 )
 
@@ -107,8 +107,8 @@ config = FinDataKitConfig(
 
 ```python
 from redis.asyncio import Redis
-from src.findatakit.bootstrap import create_client
-from src.findatakit.cookie.playwright import PlaywrightTool
+from findatakit.bootstrap import create_client
+from findatakit.cookie.playwright import PlaywrightTool
 
 client = create_client(
     config=config,
@@ -125,9 +125,9 @@ Provider 需要声明数据源、能力与处理方法的映射，并通过装�
 
 ```python
 from enum import StrEnum
-from src.findatakit.provider.provider import Provider
-from src.findatakit.provider.provider_class_registry import register_provider
-from src.findatakit.provider.provider_client import ProviderClient
+from findatakit.provider.provider import Provider
+from findatakit.provider.provider_class_registry import register_provider
+from findatakit.provider.provider_client import ProviderClient
 
 
 class MySource(StrEnum):

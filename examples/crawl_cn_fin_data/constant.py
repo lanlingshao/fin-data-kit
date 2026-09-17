@@ -1,6 +1,6 @@
-from enum import IntEnum, StrEnum
+from enum import StrEnum
 
-from src.findatakit.provider.enum import DataSourceId, CapabilityId
+from findatakit.provider.enum import DataSourceId, CapabilityId
 
 
 class FinDataSource(DataSourceId):

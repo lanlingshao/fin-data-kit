@@ -1,15 +1,15 @@
 import unittest
 from enum import StrEnum
 
-from src.findatakit.config.capability_priority_config import (
+from findatakit import (
     CapabilityPriority,
     CapabilityPriorityConfig,
 )
-from src.findatakit.provider.provider import Provider
-from src.findatakit.provider.provider_registry import ProviderRegistry
-from src.findatakit.router.health import ProviderHealth
-from src.findatakit.router.priority_strategy import PriorityStrategy
-from src.findatakit.router.router import ProviderRouter
+from findatakit.provider.provider import Provider
+from findatakit.provider.provider_registry import ProviderRegistry
+from findatakit.router.health import ProviderHealth
+from findatakit.router.priority_strategy import PriorityStrategy
+from findatakit import ProviderRouter
 
 
 class Source(StrEnum):

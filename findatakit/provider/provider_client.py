@@ -2,9 +2,9 @@ from typing import Generic
 
 import httpx
 
-from src.findatakit.client.http_client import HttpClient
-from src.findatakit.provider.enum import Source
-from src.findatakit.config.source_config_registry import SourceConfigRegistry
+from findatakit.client.http_client import HttpClient
+from findatakit.provider.enum import Source
+from findatakit.config.source_config_registry import SourceConfigRegistry
 
 
 class ProviderClient:

@@ -1,10 +1,10 @@
 import logging
 import traceback
 
-from src.findatakit.provider.enum import Capability
-from src.findatakit.provider.provider_registry import ProviderRegistry
-from src.findatakit.router.health import ProviderHealth
-from src.findatakit.router.priority_strategy import PriorityStrategy
+from findatakit.provider.enum import Capability
+from findatakit.provider.provider_registry import ProviderRegistry
+from findatakit.router.health import ProviderHealth
+from findatakit.router.priority_strategy import PriorityStrategy
 
 logger = logging.getLogger(__name__)
 

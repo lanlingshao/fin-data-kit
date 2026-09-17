@@ -1,6 +1,6 @@
-from src.findatakit.config.capability_priority_config import CapabilityPriorityConfig
-from src.findatakit.provider.enum import Capability
-from src.findatakit.provider.provider import Provider
+from findatakit.config.capability_priority_config import CapabilityPriorityConfig
+from findatakit.provider.enum import Capability
+from findatakit.provider.provider import Provider
 
 
 class PriorityStrategy:

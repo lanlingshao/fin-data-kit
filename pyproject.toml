@@ -1,11 +1,11 @@
 [project]
 name = "fin-data-kit"
 version = "0.1.0"
-description = "Add your description here"
+description = "An asynchronous, configuration-driven Python framework for collecting and routing financial data across multiple providers with retries, rate limiting, authentication, and automatic failover."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "cachetools==7.2.0",
+    "cachetools==6.2.4",
     "httpx==0.28.1",
     "playwright==1.56.0",
 ]

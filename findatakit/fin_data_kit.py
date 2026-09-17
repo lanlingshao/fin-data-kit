@@ -1,5 +1,5 @@
-from src.findatakit.provider.enum import Capability
-from src.findatakit.router.router import ProviderRouter
+from findatakit.provider.enum import Capability
+from findatakit.router.router import ProviderRouter
 
 
 class FinDataKit:

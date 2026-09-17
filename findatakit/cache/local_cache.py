@@ -1,7 +1,7 @@
 from cachetools import TTLCache
 import asyncio
 
-from src.findatakit.cache.cache import Cache
+from findatakit.cache.cache import Cache
 
 
 class LocalCache(Cache):

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Generic
 
-from src.findatakit.provider.enum import Capability, Source
+from findatakit.provider.enum import Capability, Source
 
 
 @dataclass

@@ -59,11 +59,11 @@ daily_klines = await client.get(
 Each enabled data source has a corresponding `SourceConfig`. The `retry`, `rate_limit`, `headers`, and `auth` options are all optional.
 
 ```python
-from src.findatakit.config.capability_priority_config import (
+from findatakit import (
     CapabilityPriority, CapabilityPriorityConfig,
 )
-from src.findatakit.config.config import FinDataKitConfig
-from src.findatakit.config.source_config import (
+from findatakit import FinDataKitConfig
+from findatakit import (
     RateLimitConfig, RetryConfig, SourceConfig,
 )
 
@@ -107,8 +107,8 @@ Use `create_client` to assemble the configuration, cookie provider, and cache. A
 
 ```python
 from redis.asyncio import Redis
-from src.findatakit.bootstrap import create_client
-from src.findatakit.cookie.playwright import PlaywrightTool
+from findatakit.bootstrap import create_client
+from findatakit.cookie.playwright import PlaywrightTool
 
 client = create_client(
     config=config,
@@ -125,9 +125,9 @@ A provider declares its data source, capabilities, and handler mapping, then reg
 
 ```python
 from enum import StrEnum
-from src.findatakit.provider.provider import Provider
-from src.findatakit.provider.provider_class_registry import register_provider
-from src.findatakit.provider.provider_client import ProviderClient
+from findatakit.provider.provider import Provider
+from findatakit.provider.provider_class_registry import register_provider
+from findatakit.provider.provider_client import ProviderClient
 
 
 class MySource(StrEnum):

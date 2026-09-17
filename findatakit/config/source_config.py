@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import ClassVar, Optional, Union, Generic
 
-from src.findatakit.provider.enum import Source
+from findatakit.provider.enum import Source
 
 
 # In the future, we can add more auth types, like as password auth, etc.

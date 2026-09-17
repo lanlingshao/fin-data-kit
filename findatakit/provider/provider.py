@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Generic
 
-from src.findatakit.provider.enum import Capability, Source
+from findatakit.provider.enum import Capability, Source
 
 
 class Provider(ABC, Generic[Source, Capability]):

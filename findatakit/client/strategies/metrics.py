@@ -1,7 +1,7 @@
 import time
 
-from src.findatakit.client.context import RequestContext
-from src.findatakit.client.strategies.base import RequestStrategy
+from findatakit.client.context import RequestContext
+from findatakit.client.strategies.base import RequestStrategy
 
 
 class MetricsStrategy(RequestStrategy):

@@ -1,17 +1,13 @@
 from dataclasses import dataclass
 from datetime import date, datetime
-import logging
 from zoneinfo import ZoneInfo
 
 import pandas as pd
 
 from examples.crawl_cn_fin_data.constant import FinDataSource, FinCapability, ApiMethod, CustomException
-from src.findatakit.provider.provider import Provider
-from src.findatakit.provider.provider_class_registry import register_provider
-from src.findatakit.provider.provider_client import ProviderClient
-
-
-logger = logging.getLogger(__name__)
+from findatakit.provider.provider import Provider
+from findatakit.provider.provider_class_registry import register_provider
+from findatakit.provider.provider_client import ProviderClient
 
 
 @dataclass

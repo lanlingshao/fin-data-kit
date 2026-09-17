@@ -1,9 +1,9 @@
 from collections import defaultdict
 
-from src.findatakit.provider.provider_class_registry import ProviderClassRegistry
-from src.findatakit.provider.provider_client import ProviderClientRegistry
-from src.findatakit.provider.enum import Capability
-from src.findatakit.provider.provider import Provider
+from findatakit.provider.provider_class_registry import ProviderClassRegistry
+from findatakit.provider.provider_client import ProviderClientRegistry
+from findatakit.provider.enum import Capability
+from findatakit.provider.provider import Provider
 
 
 class ProviderRegistry:

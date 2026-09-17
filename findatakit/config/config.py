@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from src.findatakit.config.capability_priority_config import CapabilityPriorityConfig
-from src.findatakit.config.source_config import SourceConfig
+from findatakit.config.capability_priority_config import CapabilityPriorityConfig
+from findatakit.config.source_config import SourceConfig
 
 
 @dataclass

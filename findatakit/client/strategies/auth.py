@@ -5,12 +5,12 @@ from abc import ABC, abstractmethod
 
 import httpx
 
-from src.findatakit.cache.cache import Cache
-from src.findatakit.client.context import RequestContext
-from src.findatakit.client.strategies.base import RequestStrategy
-from src.findatakit.client.strategies.retry import RetryException
-from src.findatakit.config.source_config import CookieAuthConfig
-from src.findatakit.cookie.cookie_provider import CookieProvider
+from findatakit.cache.cache import Cache
+from findatakit.client.context import RequestContext
+from findatakit.client.strategies.base import RequestStrategy
+from findatakit.client.strategies.retry import RetryException
+from findatakit.config.source_config import CookieAuthConfig
+from findatakit.cookie.cookie_provider import CookieProvider
 
 
 class AuthStrategy(ABC):

@@ -1,10 +1,10 @@
 import unittest
 from enum import StrEnum
 
-from src.findatakit.config.source_config import SourceConfig
-from src.findatakit.config.source_config_registry import create_source_config_registry
-from src.findatakit.provider.provider import Provider
-from src.findatakit.provider.provider_registry import ProviderRegistry
+from findatakit import SourceConfig
+from findatakit import create_source_config_registry
+from findatakit.provider.provider import Provider
+from findatakit.provider.provider_registry import ProviderRegistry
 
 
 class Source(StrEnum):

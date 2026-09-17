@@ -1,14 +1,12 @@
 import asyncio
 from datetime import date
 
-from redis.asyncio.client import Redis
-
 from examples.crawl_cn_fin_data.constant import FinDataSource, FinCapability
-from src.findatakit.bootstrap import create_client
-from src.findatakit.config.capability_priority_config import CapabilityPriorityConfig, CapabilityPriority
-from src.findatakit.config.config import FinDataKitConfig
-from src.findatakit.config.source_config import SourceConfig, RetryConfig, RateLimitConfig, CookieAuthConfig
-from src.findatakit.cookie.playwright import PlaywrightTool
+from findatakit.bootstrap import create_client
+from findatakit.config.capability_priority_config import CapabilityPriorityConfig, CapabilityPriority
+from findatakit.config.config import FinDataKitConfig
+from findatakit.config.source_config import SourceConfig, RetryConfig, RateLimitConfig, CookieAuthConfig
+from findatakit.cookie.playwright import PlaywrightTool
 
 # ------------------------------
 # 1. build config

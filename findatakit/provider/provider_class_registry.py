@@ -1,4 +1,4 @@
-from src.findatakit.provider.provider import Provider
+from findatakit.provider.provider import Provider
 
 
 class ProviderClassRegistry:

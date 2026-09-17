@@ -4,11 +4,11 @@ from unittest.mock import AsyncMock, patch
 
 import httpx
 
-from src.findatakit.client.context import RequestContext
-from src.findatakit.client.http_client import HttpClient
-from src.findatakit.client.strategies.rate_limit import RateLimitStrategy, TokenBucket
-from src.findatakit.client.strategies.retry import RetryStrategy
-from src.findatakit.config.source_config import RateLimitConfig, RetryConfig, SourceConfig
+from findatakit.client import RequestContext
+from findatakit.client import HttpClient
+from findatakit.client.strategies.rate_limit import RateLimitStrategy, TokenBucket
+from findatakit.client.strategies.retry import RetryStrategy
+from findatakit import RateLimitConfig, RetryConfig, SourceConfig
 
 
 class Source(StrEnum):
