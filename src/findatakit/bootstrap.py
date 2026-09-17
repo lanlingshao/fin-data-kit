@@ -11,6 +11,7 @@ from .config.config import FinDataKitConfig
 from .config.source_config_registry import create_source_config_registry
 from .cookie.cookie_provider import CookieProvider
 from .fin_data_kit import FinDataKit
+from .provider.auto_import_provider import auto_import_providers
 from .provider.provider_client import ProviderClientRegistry
 from .provider.provider_registry import build_provider_registry
 from .router.health import ProviderHealth
@@ -43,6 +44,8 @@ def create_client(
         registry=source_config_registry,
         http_client=http_client,
     )
+
+    auto_import_providers(config.provider_path)
 
     provider_registry = build_provider_registry(provider_client_factory=provider_client_factory)
 

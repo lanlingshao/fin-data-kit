@@ -5,6 +5,7 @@ from typing import ClassVar, Optional, Union, Generic
 from src.findatakit.provider.enum import Source
 
 
+# In the future, we can add more auth types, like as password auth, etc.
 class AuthType(StrEnum):
     NONE = "none"
     COOKIE = "cookie"
@@ -35,7 +36,7 @@ class CookieAuthConfig(BaseAuthConfig):
     refresh_status_code: int = 400
     refresh_error_code: str = "400016"
 
-
+# In the future, we can add more auth types, like as password auth, etc.
 AuthConfig = Union[
     CookieAuthConfig,
 ]

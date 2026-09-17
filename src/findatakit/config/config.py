@@ -8,3 +8,4 @@ from src.findatakit.config.source_config import SourceConfig
 class FinDataKitConfig:
     sources: list[SourceConfig]
     capability_priority: CapabilityPriorityConfig
+    provider_path: str

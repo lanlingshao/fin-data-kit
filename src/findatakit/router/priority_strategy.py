@@ -14,6 +14,6 @@ class PriorityStrategy:
         # 按 priority 升序排序
         return sorted(
             providers,
-            key=lambda p: priority_map[p.source]["priority"]
+            key=lambda p: priority_map[p.source].priority
             if p.source in priority_map else 999
         )

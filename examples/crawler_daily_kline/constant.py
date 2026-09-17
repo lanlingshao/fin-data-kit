@@ -16,12 +16,6 @@ class ApiMethod(StrEnum):
     GetDailyKline = "get_daily_kline"
 
 
-class AdjustType(IntEnum):
-    NO = 0  # 不复权
-    PRE = 1  # 前复权
-    POST = 2  # 后复权
-
-
 class CustomException(Exception):
     """
     自定义异常基类
