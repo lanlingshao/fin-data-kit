@@ -36,18 +36,19 @@ source_confs = [
         source=FinDataSource.Eastmoney,
         retry=RetryConfig(max_retries=2),
         rate_limit=RateLimitConfig(rate=10, capacity=100),
-        # eastmoney do not need auth to get daily kline
+        # eastmoney don't need auth to get daily kline
         auth=None,
     ),
     SourceConfig(
         source=FinDataSource.SSEExchange,
         retry=RetryConfig(max_retries=2),
-        # sse exchange do not need auth to get stock list
+        # sse exchange don't need auth to get stock list
         auth=None,
     )
 ]
 
-# 1.2 build capability priority config, we can set multiple data source, and set priority to choose the data source
+# 1.2 build capability priority config,
+#     we can set multiple data source, and set priority to choose the data source
 #     the smaller the priority number is, the earlier it is chosen. if two data source have the same priority,
 #     the first one is chosen. if the first failed, the second one is chosen.
 capability_priority_conf = CapabilityPriorityConfig(
