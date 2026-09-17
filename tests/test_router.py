@@ -9,7 +9,7 @@ from findatakit.provider.provider import Provider
 from findatakit.provider.provider_registry import ProviderRegistry
 from findatakit.router.health import ProviderHealth
 from findatakit.router.priority_strategy import PriorityStrategy
-from findatakit import ProviderRouter
+from findatakit.router.router import ProviderRouter
 
 
 class Source(StrEnum):

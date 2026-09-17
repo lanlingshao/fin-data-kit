@@ -4,8 +4,8 @@ from unittest.mock import AsyncMock, patch
 
 import httpx
 
-from findatakit.client import RequestContext
-from findatakit.client import HttpClient
+from findatakit.client.context import RequestContext
+from findatakit.client.http_client import HttpClient
 from findatakit.client.strategies.rate_limit import RateLimitStrategy, TokenBucket
 from findatakit.client.strategies.retry import RetryStrategy
 from findatakit import RateLimitConfig, RetryConfig, SourceConfig
@@ -28,7 +28,7 @@ class TestHttpClient(unittest.IsolatedAsyncioTestCase):
             headers={"X-Source": "configured", "X-Shared": "config"},
         )
 
-        with patch("src.findatakit.client.strategies.retry.asyncio.sleep", new=AsyncMock()) as sleep:
+        with patch("findatakit.client.strategies.retry.asyncio.sleep", new=AsyncMock()) as sleep:
             actual = await client.request(
                 "GET",
                 "https://example.test/quote",
@@ -54,7 +54,7 @@ class TestHttpClient(unittest.IsolatedAsyncioTestCase):
         client._client = transport
         config = SourceConfig(source=Source.TEST, retry=RetryConfig(max_retries=1))
 
-        with patch("src.findatakit.client.strategies.retry.asyncio.sleep", new=AsyncMock()):
+        with patch("findatakit.client.strategies.retry.asyncio.sleep", new=AsyncMock()):
             with self.assertRaises(httpx.ConnectError):
                 await client.request("GET", "https://example.test", source=Source.TEST, config=config)
 
