@@ -1,7 +1,7 @@
 from .bootstrap import create_client
 from .fin_data_kit import FinDataKit
 from .config.source_config import SourceConfig, RetryConfig, RateLimitConfig, CookieAuthConfig
-from .config.capability_priority_config import CapabilityPriorityConfig, CapabilityPriority
+from .config.capability_priority_config import CapabilityPriority
 from .config.config import FinDataKitConfig
 from .cookie.cookie_provider import CookieProvider
 from .cookie.playwright import PlaywrightTool
@@ -16,7 +16,6 @@ __all__ = [
     "FinDataKit",
 
     "SourceConfig",
-    "CapabilityPriorityConfig",
     "FinDataKitConfig",
     "RetryConfig",
     "RateLimitConfig",

@@ -61,42 +61,63 @@ daily_klines = await client.get(
 每个启用的数据源对应一份 `SourceConfig`；`retry`、`rate_limit`、`headers` 和 `auth` 都是可选项。
 
 ```python
-from findatakit import (
-    CapabilityPriority, CapabilityPriorityConfig,
-)
-from findatakit import FinDataKitConfig
-from findatakit import (
-    RateLimitConfig, RetryConfig, SourceConfig,
-)
+from examples.crawl_cn_fin_data.constant import FinDataSource, FinCapability
+from findatakit.config.config import build_config
 
-source_configs = [
-    SourceConfig(
-        source=FinDataSource.Xueqiu,
-        retry=RetryConfig(max_retries=2),
-        rate_limit=RateLimitConfig(rate=10, capacity=20),
-        headers={"Referer": "https://xueqiu.com/"},
-    ),
-    SourceConfig(
-        source=FinDataSource.Eastmoney,
-        retry=RetryConfig(max_retries=2),
-        rate_limit=RateLimitConfig(rate=10, capacity=100),
-    ),
-]
-
-priority_config = CapabilityPriorityConfig(
-    capability_priority={
+cfg = {
+    "sources": [
+        {
+            "source": FinDataSource.Xueqiu,
+            "headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+            },
+            "retry": {
+                "max_retries": 2,
+            },
+            "rate_limit": {
+                "rate": 10,
+                "capacity": 20,
+            },
+            # xueqiu need cookie to get daily kline
+            "auth": {
+                "type": "cookie",
+                "home_url": "https://xueqiu.com",
+                "cache_key": "xueqiu_cookies",
+                "cookie_num": 10,
+                "refresh_status_code": 400,
+                "refresh_error_code": "400016",
+            },
+        },
+        {
+            "source": FinDataSource.Eastmoney,
+            "retry": {
+                "max_retries": 3,
+            },
+            "rate_limit": {
+                "rate": 100,
+                "capacity": 1000,
+            },
+            # eastmoney don't need auth to get daily kline
+            "auth": None,
+        },
+        {
+            "source": FinDataSource.SSEExchange,
+            "retry": {
+                "max_retries": 3,
+            },
+            # sse exchange don't need auth to get stock list
+            "auth": None,
+        },
+    ],
+    "capability_priority": {
         FinCapability.CnDailyKine: {
-            FinDataSource.Xueqiu: CapabilityPriority(priority=1),
-            FinDataSource.Eastmoney: CapabilityPriority(priority=2),
+            FinDataSource.Xueqiu: 2,
+            FinDataSource.Eastmoney: 1,
         },
     },
-)
-
-config = FinDataKitConfig(
-    sources=source_configs,
-    capability_priority=priority_config,
-    provider_path="examples.crawl_cn_fin_data",
-)
+    "provider_path": "examples.crawl_cn_fin_data",
+}
+config = build_config(cfg)
 ```
 
 优先级数字越小越先调用；未配置优先级的 Provider 排在最后。Provider 抛出异常时，路由器会尝试下一个可用 Provider，并将失败者标记为不健康。默认冷却期为 60 秒，期间不会再次选择它。

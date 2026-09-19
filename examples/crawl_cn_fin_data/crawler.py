@@ -3,66 +3,80 @@ from datetime import date
 
 from examples.crawl_cn_fin_data.constant import FinDataSource, FinCapability
 from findatakit.bootstrap import create_client
-from findatakit.config.capability_priority_config import CapabilityPriorityConfig, CapabilityPriority
-from findatakit.config.config import FinDataKitConfig
-from findatakit.config.source_config import SourceConfig, RetryConfig, RateLimitConfig, CookieAuthConfig
+from findatakit.config.config import build_config
 from findatakit.cookie.playwright import PlaywrightTool
+
 
 # ------------------------------
 # 1. build config
 # ------------------------------
 
-# 1.1 build source config
-source_confs = [
-    SourceConfig(
-        source=FinDataSource.Xueqiu,
-        headers={
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-        },
-        retry=RetryConfig(max_retries=2),
-        rate_limit=RateLimitConfig(rate=10, capacity=20),
-        # xueqiu need cookie to get daily kline
-        auth=CookieAuthConfig(
-            home_url="https://xueqiu.com",
-            cache_key="xueqiu_cookies",
-            cookie_num=10,
-            refresh_status_code=400,
-            refresh_error_code="400016",
-        ),
-    ),
-    SourceConfig(
-        source=FinDataSource.Eastmoney,
-        retry=RetryConfig(max_retries=2),
-        rate_limit=RateLimitConfig(rate=10, capacity=100),
-        # eastmoney don't need auth to get daily kline
-        auth=None,
-    ),
-    SourceConfig(
-        source=FinDataSource.SSEExchange,
-        retry=RetryConfig(max_retries=2),
-        # sse exchange don't need auth to get stock list
-        auth=None,
-    )
-]
+# 1.1 set source config
+#     we have two methods to build source config, one is to use dict, one is to use build_source_config function
 
-# 1.2 build capability priority config,
+# 1.2 set capability priority config,
 #     we can set multiple data source, and set priority to choose the data source
-#     the smaller the priority number is, the earlier it is chosen. if two data source have the same priority,
+#     the larger the priority number is, the earlier it is chosen. if two data source have the same priority,
 #     the first one is chosen. if the first failed, the second one is chosen.
-capability_priority_conf = CapabilityPriorityConfig(
-    capability_priority={
-        FinCapability.CnDailyKine: {
-            FinDataSource.Xueqiu: CapabilityPriority(priority=1),
-            FinDataSource.Eastmoney: CapabilityPriority(priority=2),
-        }
-    }
-)
 
-config = FinDataKitConfig(
-    sources=source_confs,
-    capability_priority=capability_priority_conf,
-    provider_path="examples.crawl_cn_fin_data",
-)
+# 1.3 set provider_path
+
+# Note: xueqiu and eastmoney interface may be blocked, so the example may not work. you can write your own provider.
+
+cfg = {
+    "sources": [
+        {
+            "source": FinDataSource.Xueqiu,
+            "headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+            },
+            "retry": {
+                "max_retries": 2,
+            },
+            "rate_limit": {
+                "rate": 10,
+                "capacity": 20,
+            },
+            # xueqiu need cookie to get daily kline
+            "auth": {
+                "type": "cookie",
+                "home_url": "https://xueqiu.com",
+                "cache_key": "xueqiu_cookies",
+                "cookie_num": 10,
+                "refresh_status_code": 400,
+                "refresh_error_code": "400016",
+            },
+        },
+        {
+            "source": FinDataSource.Eastmoney,
+            "retry": {
+                "max_retries": 3,
+            },
+            "rate_limit": {
+                "rate": 100,
+                "capacity": 1000,
+            },
+            # eastmoney don't need auth to get daily kline
+            "auth": None,
+        },
+        {
+            "source": FinDataSource.SSEExchange,
+            "retry": {
+                "max_retries": 3,
+            },
+            # sse exchange don't need auth to get stock list
+            "auth": None,
+        },
+    ],
+    "capability_priority": {
+        FinCapability.CnDailyKine: {
+            FinDataSource.Xueqiu: 2,
+            FinDataSource.Eastmoney: 1,
+        },
+    },
+    "provider_path": "examples.crawl_cn_fin_data",
+}
+config = build_config(cfg)
 
 # ------------------------------
 # 2. create client

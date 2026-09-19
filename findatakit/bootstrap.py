@@ -57,7 +57,7 @@ def create_client(
 
     provider_router = ProviderRouter(
         registry=provider_registry,
-        strategy=PriorityStrategy(config=config.capability_priority),
+        strategy=PriorityStrategy(config=config.capability_priority_config),
         health=ProviderHealth(),
     )
 
