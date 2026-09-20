@@ -120,7 +120,7 @@ cfg = {
 config = build_config(cfg)
 ```
 
-Lower priority numbers are called first; providers without an explicitly configured priority are placed last. When a provider raises an exception, the router tries the next available provider and marks the failed provider as unhealthy. The default cooldown period is 60 seconds, during which it will not be selected again.
+Higher priority numbers are called first; providers without an explicitly configured priority are placed last. When a provider raises an exception, the router tries the next available provider and marks the failed provider as unhealthy. The default cooldown period is 60 seconds, during which it will not be selected again.
 
 `RateLimitConfig(rate=10, capacity=20)` adds 10 tokens per second and allows up to 20 tokens to accumulate. Each request consumes one token. Rate limiting is shared per data source.
 
